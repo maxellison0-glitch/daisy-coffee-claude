@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Daisy Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .checkout-page { min-height: 100vh; background: var(--sage-paler); padding: 100px 40px 80px; }
+    .checkout-inner { display: grid; grid-template-columns: 1fr 420px; gap: 40px; max-width: 1000px; margin: 0 auto; align-items: start; }
+    .checkout-form-wrap { background: var(--white); padding: 48px; }
+    .checkout-title { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--text); margin-bottom: 8px; }
+    .checkout-title em { font-style: italic; color: var(--sage-dark); }
+    .checkout-sub { font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 300; color: var(--text-light); margin-bottom: 36px; line-height: 1.7; }
+    .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; color: var(--text); margin-bottom: 20px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--sage-pale); }
+    .form-section-title:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+    .form-group label { font-family: 'Nunito', sans-serif; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light); }
+    .form-group input, .form-group textarea, .form-group select {
+      background: var(--sage-paler); border: 1px solid var(--sage-light); color: var(--text);
+      padding: 13px 16px; font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 300;
+      outline: none; transition: border-color 0.2s; appearance: none;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-light); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--sage); background: var(--white); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .submit-btn {
+      width: 100%; padding: 18px; background: var(--sage); color: var(--white); border: none;
+      font-family: 'Nunito', sans-serif; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+      transition: background 0.25s; margin-top: 8px;
+    }
+    .submit-btn:hover { background: var(--sage-dark); }
+    .submit-note { font-family: 'Nunito', sans-serif; font-size: 0.68rem; font-weight: 300; color: var(--text-light); text-align: center; margin-top: 12px; line-height: 1.6; }
+
+    .order-summary { background: var(--white); padding: 36px; position: sticky; top: 100px; }
+    .summary-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: 24px; }
+    .summary-items { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+    .summary-item { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--sage-pale); }
+    .summary-item:last-child { border-bottom: none; }
+    .summary-item-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 500; color: var(--text); }
+    .summary-item-size { font-family: 'Nunito', sans-serif; font-size: 0.65rem; color: var(--text-light); margin-top: 2px; }
+    .summary-item-qty { font-family: 'Nunito', sans-serif; font-size: 0.7rem; color: var(--text-light); }
+    .summary-item-price { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; color: var(--text); white-space: nowrap; }
+    .summary-empty { font-family: 'Nunito', sans-serif; font-size: 0.82rem; color: var(--text-light); text-align: center; padding: 24px 0; }
+    .summary-divider { border: none; border-top: 1px solid var(--sage-light); margin: 16px 0; }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .summary-label { font-family: 'Nunito', sans-serif; font-size: 0.7rem; color: var(--text-light); }
+    .summary-value { font-family: 'Nunito', sans-serif; font-size: 0.75rem; color: var(--text); }
+    .summary-total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 16px; border-top: 2px solid var(--sage-light); }
+    .summary-total-label { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 500; color: var(--text); }
+    .summary-total { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--text); }
+    .summary-contact { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--sage-pale); }
+    .summary-contact p { font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 300; color: var(--text-light); line-height: 1.7; }
+    .summary-contact a { color: var(--sage-dark); text-decoration: none; }
+    .empty-basket-msg { background: var(--sage-pale); border: 1px solid var(--sage-light); padding: 20px; margin-bottom: 24px; }
+    .empty-basket-msg p { font-family: 'Nunito', sans-serif; font-size: 0.8rem; color: var(--text-mid); line-height: 1.7; }
+    .empty-basket-msg a { color: var(--sage-dark); font-weight: 600; }
+    .success-box { display: none; background: var(--sage-pale); border: 1px solid var(--sage-light); padding: 48px 36px; text-align: center; }
+    .success-icon { font-size: 48px; margin-bottom: 20px; }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--text); margin-bottom: 12px; }
+    .success-text { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 300; color: var(--text-mid); line-height: 1.8; }
+
+    footer { background: var(--sage); padding: 36px 40px 28px; }
+    .footer-bottom { display: flex; justify-content: space-between; font-family: 'Nunito', sans-serif; font-size: 0.62rem; color: rgba(255,255,255,0.55); flex-wrap: wrap; gap: 8px; }
+    .footer-bottom a { color: rgba(255,255,255,0.8); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .checkout-page { padding: 90px 20px 60px; }
+      .checkout-inner { grid-template-columns: 1fr; }
+      .checkout-form-wrap { padding: 28px 20px; }
+      .order-summary { position: static; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toast" id="toast">Added: <span class="toast-name" id="toast-name"></span></div>
+<div class="basket-overlay" id="basket-overlay"></div>
+<div class="basket-drawer" id="basket-drawer">
+  <div class="basket-header"><h3>Your Basket</h3><button class="basket-close" onclick="closeDrawer()">✕</button></div>
+  <div class="basket-items" id="basket-items"><p class="basket-empty">Your basket is empty.</p></div>
+  <div class="basket-footer">
+    <div class="basket-total-row"><span class="basket-total-label">Total</span><span class="basket-total-amount" id="basket-total">£0.00</span></div>
+    <button class="btn-checkout" onclick="goToCheckout()">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<nav class="nav scrolled" id="nav" style="position:fixed;">
+  <a href="index.html" class="nav-logo" style="color:var(--text);">Daisy <span>Coffee</span></a>
+  <ul class="nav-links dark">
+    <li><a href="index.html#products">Our Coffee</a></li>
+    <li><a href="cafetiere-gift-set.html">Gift Sets</a></li>
+    <li><a href="collagen-blend.html#why">Why Collagen</a></li>
+    <li><a href="index.html#story">Our Story</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-basket-btn dark" onclick="openDrawer()">🛍 Basket <span class="basket-count" id="basket-count">0</span></button>
+    <button class="nav-hamburger dark" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html#products">Our Coffee</a>
+  <a href="cafetiere-gift-set.html">Gift Sets</a>
+  <a href="index.html#story">Our Story</a>
+  <a href="checkout.html">Checkout</a>
+</div>
+
+<div class="checkout-page">
+  <div class="checkout-inner">
+    <div class="checkout-form-wrap">
+      <h1 class="checkout-title">Your <em>order</em></h1>
+      <p class="checkout-sub">Fill in your details below and we'll confirm everything within 24 hours. Payment is taken after we've confirmed your order — we'll be in touch with details.</p>
+
+      <div class="empty-basket-msg" id="empty-msg" style="display:none;">
+        <p>Your basket is empty. <a href="index.html">Browse our collection</a> and add something you love before checking out.</p>
+      </div>
+
+      <form id="order-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="hidden" name="order_summary" id="order-summary-input">
+        <input type="hidden" name="order_total" id="order-total-input">
+
+        <h3 class="form-section-title">Your details</h3>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" name="first_name" placeholder="Your first name" required></div>
+          <div class="form-group"><label>Last Name</label><input type="text" name="last_name" placeholder="Your last name" required></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="07..."></div>
+
+        <h3 class="form-section-title">Delivery address</h3>
+        <div class="form-group"><label>Address Line 1</label><input type="text" name="address_1" placeholder="House number and street" required></div>
+        <div class="form-group"><label>Address Line 2</label><input type="text" name="address_2" placeholder="Apartment, suite, etc. (optional)"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Town / City</label><input type="text" name="city" placeholder="City" required></div>
+          <div class="form-group"><label>Postcode</label><input type="text" name="postcode" placeholder="Postcode" required></div>
+        </div>
+
+        <h3 class="form-section-title">Anything else?</h3>
+        <div class="form-group"><label>Gift message or notes (optional)</label><textarea name="notes" placeholder="Gift message, special requests, or anything you'd like us to know"></textarea></div>
+
+        <button type="submit" class="submit-btn">Place My Order →</button>
+        <p class="submit-note">We'll confirm your order and send payment details within 24 hours. No payment is taken now.</p>
+      </form>
+
+      <div class="success-box" id="success-box">
+        <div class="success-icon">🌼</div>
+        <h2 class="success-title">Order received</h2>
+        <p class="success-text">Thank you so much. We'll be in touch within 24 hours to confirm your order and arrange payment. Keep an eye on your inbox — and enjoy your first cup when it arrives.</p>
+      </div>
+    </div>
+
+    <div class="order-summary">
+      <h3 class="summary-title">Order Summary</h3>
+      <div class="summary-items" id="summary-items">
+        <p class="summary-empty">No items yet</p>
+      </div>
+      <hr class="summary-divider">
+      <div class="summary-row">
+        <span class="summary-label">Subtotal</span>
+        <span class="summary-value" id="summary-subtotal">£0.00</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Delivery</span>
+        <span class="summary-value" id="summary-delivery">Calculated at confirmation</span>
+      </div>
+      <div class="summary-total-row">
+        <span class="summary-total-label">Total</span>
+        <span class="summary-total" id="summary-total">£0.00</span>
+      </div>
+      <div class="summary-contact">
+        <p>Questions before ordering?<br>Email us at <a href="mailto:orders@daisymaison.co.uk">orders@daisymaison.co.uk</a> or call <a href="tel:07936558870">07936 558 870</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2024 Daisy Coffee. A Daisy Maison brand.</span>
+    <span><a href="index.html">← Continue shopping</a></span>
+  </div>
+</footer>
+
+<script src="basket.js"></script>
+<script>
+  function renderSummary() {
+    const basket = getBasket();
+    const total = getTotal();
+    const itemsEl = document.getElementById('summary-items');
+    const emptyMsg = document.getElementById('empty-msg');
+
+    if (basket.length === 0) {
+      itemsEl.innerHTML = '<p class="summary-empty">Your basket is empty</p>';
+      if (emptyMsg) emptyMsg.style.display = 'block';
+    } else {
+      if (emptyMsg) emptyMsg.style.display = 'none';
+      itemsEl.innerHTML = basket.map(i => `
+        <div class="summary-item">
+          <div>
+            <div class="summary-item-name">${i.name}</div>
+            <div class="summary-item-size">${i.size}</div>
+            <div class="summary-item-qty">Qty: ${i.qty}</div>
+          </div>
+          <div class="summary-item-price">£${(i.price * i.qty).toFixed(2)}</div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('summary-subtotal').textContent = '£' + total.toFixed(2);
+    document.getElementById('summary-total').textContent = '£' + total.toFixed(2);
+    document.getElementById('summary-delivery').textContent = total >= 35 ? 'Free' : 'Confirmed with order';
+
+    // populate hidden fields for Formspree
+    const summaryText = basket.map(i => `${i.name} (${i.size}) x${i.qty} = £${(i.price * i.qty).toFixed(2)}`).join(' | ');
+    const inp = document.getElementById('order-summary-input');
+    const tot = document.getElementById('order-total-input');
+    if (inp) inp.value = summaryText || 'No items';
+    if (tot) tot.value = '£' + total.toFixed(2);
+  }
+
+  document.getElementById('order-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('success-box').style.display = 'block';
+        localStorage.removeItem('daisy_coffee_basket');
+        updateBasketUI();
+      }
+    } catch(err) {
+      alert('Something went wrong. Please email orders@daisymaison.co.uk directly.');
+    }
+  });
+
+  renderSummary();
+</script>
+</body>
+</html>

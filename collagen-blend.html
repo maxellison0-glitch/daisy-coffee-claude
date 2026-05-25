@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collagen Coffee Blend — Daisy Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .product-hero { background: var(--sage-paler); padding: 100px 40px 0; }
+    .product-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; max-width: 1100px; margin: 0 auto; padding-bottom: 80px; }
+    .product-img-wrap { position: relative; }
+    .product-img-main { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .product-img-thumb-row { display: flex; gap: 2px; margin-top: 2px; }
+    .product-img-thumb { width: calc(33.33% - 2px); aspect-ratio: 1; object-fit: cover; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+    .product-img-thumb:hover, .product-img-thumb.active { opacity: 1; }
+    .breadcrumb { font-family: 'Nunito', sans-serif; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 24px; }
+    .breadcrumb a { color: var(--sage-dark); text-decoration: none; }
+    .product-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; color: var(--text); line-height: 1.1; margin-bottom: 16px; }
+    .product-short-desc { font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 300; color: var(--text-mid); line-height: 1.85; margin-bottom: 28px; }
+    .product-price-display { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--text); margin-bottom: 24px; }
+    .option-label { font-family: 'Nunito', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light); margin-bottom: 10px; display: block; }
+    .size-options { display: flex; gap: 2px; margin-bottom: 24px; flex-wrap: wrap; }
+    .size-btn {
+      font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 500;
+      padding: 10px 20px; border: 1px solid var(--sage-light); background: var(--white);
+      color: var(--text-mid); cursor: pointer; transition: all 0.2s;
+    }
+    .size-btn:hover { border-color: var(--sage); color: var(--text); }
+    .size-btn.active { background: var(--sage); border-color: var(--sage); color: var(--white); }
+    .qty-row { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .qty-ctrl { display: flex; align-items: center; border: 1px solid var(--sage-light); }
+    .qty-btn { width: 40px; height: 44px; background: var(--sage-pale); border: none; font-size: 1.1rem; cursor: pointer; color: var(--text); transition: background 0.2s; }
+    .qty-btn:hover { background: var(--sage-light); }
+    .qty-num { width: 48px; text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--text); }
+    .add-to-basket-btn {
+      flex: 1; padding: 16px 24px; background: var(--sage); color: var(--white); border: none;
+      font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s;
+    }
+    .add-to-basket-btn:hover { background: var(--sage-dark); }
+    .product-meta { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--sage-light); display: flex; flex-direction: column; gap: 10px; }
+    .product-meta-item { display: flex; align-items: center; gap: 10px; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 300; color: var(--text-mid); }
+    .product-meta-icon { font-size: 1rem; }
+
+    .product-details { background: var(--white); padding: 80px 40px; }
+    .product-details-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1100px; margin: 0 auto; }
+    .detail-block { margin-bottom: 40px; }
+    .detail-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--text); margin-bottom: 16px; }
+    .detail-text { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 300; color: var(--text-mid); line-height: 1.9; }
+    .detail-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .detail-list li { display: flex; align-items: flex-start; gap: 10px; font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 300; color: var(--text-mid); line-height: 1.6; }
+    .detail-list li::before { content: '✦'; color: var(--sage); font-size: 0.6rem; margin-top: 4px; flex-shrink: 0; }
+
+    .why-section { background: var(--sage-pale); padding: 80px 40px; }
+    .why-inner { max-width: 1100px; margin: 0 auto; }
+    .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 48px; }
+    .why-card { background: var(--white); padding: 28px 24px; }
+    .why-icon { font-size: 24px; margin-bottom: 14px; display: block; }
+    .why-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+    .why-text { font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 300; color: var(--text-light); line-height: 1.7; }
+
+    footer { background: var(--sage); padding: 48px 40px 32px; }
+    .footer-bottom { display: flex; justify-content: space-between; font-family: 'Nunito', sans-serif; font-size: 0.62rem; color: rgba(255,255,255,0.55); flex-wrap: wrap; gap: 8px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.2); }
+    .footer-bottom a { color: rgba(255,255,255,0.75); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .product-hero { padding: 90px 20px 0; }
+      .product-hero-inner { grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
+      .product-details { padding: 48px 20px; }
+      .product-details-inner { grid-template-columns: 1fr; gap: 40px; }
+      .why-section { padding: 48px 20px; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 36px 20px 24px; }
+    }
+    @media (max-width: 480px) { .why-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="toast" id="toast">Added: <span class="toast-name" id="toast-name"></span></div>
+<div class="basket-overlay" id="basket-overlay"></div>
+<div class="basket-drawer" id="basket-drawer">
+  <div class="basket-header">
+    <h3>Your Basket</h3>
+    <button class="basket-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="basket-items" id="basket-items"><p class="basket-empty">Your basket is empty.</p></div>
+  <div class="basket-footer">
+    <div class="basket-total-row">
+      <span class="basket-total-label">Total</span>
+      <span class="basket-total-amount" id="basket-total">£0.00</span>
+    </div>
+    <button class="btn-checkout" onclick="goToCheckout()">Proceed to Checkout →</button>
+  </div>
+</div>
+<div class="sticky-basket" id="sticky-basket">
+  <div class="sticky-basket-info">
+    <span class="sticky-basket-count" id="sticky-count">0 items</span>
+    <span class="sticky-basket-total" id="sticky-total">£0.00</span>
+  </div>
+  <button class="sticky-basket-btn" onclick="goToCheckout()">Checkout →</button>
+</div>
+
+<nav class="nav scrolled" id="nav" style="position:fixed;">
+  <a href="index.html" class="nav-logo" style="color:var(--text);">Daisy <span>Coffee</span></a>
+  <ul class="nav-links dark">
+    <li><a href="index.html#products">Our Coffee</a></li>
+    <li><a href="cafetiere-gift-set.html">Gift Sets</a></li>
+    <li><a href="#why">Why Collagen</a></li>
+    <li><a href="index.html#story">Our Story</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="checkout.html" class="nav-cta">Order Now</a>
+    <button class="nav-basket-btn dark" onclick="openDrawer()">
+      🛍 Basket <span class="basket-count" id="basket-count">0</span>
+    </button>
+    <button class="nav-hamburger dark" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html#products">Our Coffee</a>
+  <a href="cafetiere-gift-set.html">Gift Sets</a>
+  <a href="#why">Why Collagen</a>
+  <a href="index.html#story">Our Story</a>
+  <a href="checkout.html">Order Now</a>
+</div>
+
+<section class="product-hero">
+  <div class="product-hero-inner">
+    <div class="product-img-wrap">
+      <img class="product-img-main" id="main-img" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80" alt="Collagen Coffee Blend">
+      <div class="product-img-thumb-row">
+        <img class="product-img-thumb active" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200&q=70" onclick="switchImg(this,'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80')" alt="">
+        <img class="product-img-thumb" src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=200&q=70" onclick="switchImg(this,'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80')" alt="">
+        <img class="product-img-thumb" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&q=70" onclick="switchImg(this,'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80')" alt="">
+      </div>
+    </div>
+    <div>
+      <p class="breadcrumb"><a href="index.html">Home</a> / Our Coffee / Collagen Blend</p>
+      <h1 class="product-name">Collagen Coffee Blend</h1>
+      <p class="product-short-desc">Our signature blend with 10g of marine collagen per cup. Smooth, carefully balanced and genuinely good for you. This is the one that started everything.</p>
+      <div class="product-price-display" id="price-display">£28.95</div>
+      <span class="option-label">Choose your size</span>
+      <div class="size-options">
+        <button class="size-btn active" onclick="selectSize(this, 28.95, '250g')">250g — £28.95</button>
+        <button class="size-btn" onclick="selectSize(this, 52.95, '500g')">500g — £52.95</button>
+        <button class="size-btn" onclick="selectSize(this, 74.95, '2 x 250g')">2 x 250g — £74.95</button>
+      </div>
+      <div class="qty-row">
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQtyLocal(-1)">−</button>
+          <span class="qty-num" id="qty-display">1</span>
+          <button class="qty-btn" onclick="changeQtyLocal(1)">+</button>
+        </div>
+        <button class="add-to-basket-btn" onclick="addProduct()">Add to Basket</button>
+      </div>
+      <div class="product-meta">
+        <div class="product-meta-item"><span class="product-meta-icon">📦</span> Free UK delivery on orders over £35</div>
+        <div class="product-meta-item"><span class="product-meta-icon">🌿</span> Naturally sourced marine collagen</div>
+        <div class="product-meta-item"><span class="product-meta-icon">🌼</span> Made by the Daisy Maison family, Lancashire</div>
+        <div class="product-meta-item"><span class="product-meta-icon">✉</span> Questions? orders@daisymaison.co.uk</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="product-details">
+  <div class="product-details-inner">
+    <div>
+      <div class="detail-block">
+        <h3 class="detail-title">About this blend</h3>
+        <p class="detail-text">We spent a long time getting this one right. The collagen coffee blend started as something Shelley made at home every morning — trying different roasts, different ratios, different flavours — until it felt exactly right. What you get in the bag is the result of that. A smooth, balanced coffee that doesn't taste like it has anything added, because good marine collagen should be tasteless. Just a really good cup of coffee that quietly does a bit more for you.</p>
+      </div>
+      <div class="detail-block">
+        <h3 class="detail-title">What's inside</h3>
+        <ul class="detail-list">
+          <li>10g marine collagen peptides per serving</li>
+          <li>Carefully sourced arabica coffee beans</li>
+          <li>No artificial flavours or fillers</li>
+          <li>No added sugar</li>
+          <li>Suitable for cafetiere, filter and pour over</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="detail-block">
+        <h3 class="detail-title">How to brew</h3>
+        <ul class="detail-list">
+          <li>Use one heaped tablespoon per cup</li>
+          <li>Water temperature around 93°C — just off the boil</li>
+          <li>Brew for 4 minutes in a cafetiere, 3 in a filter</li>
+          <li>Works beautifully with oat milk if you prefer it white</li>
+          <li>Best enjoyed as your first cup of the day</li>
+        </ul>
+      </div>
+      <div class="detail-block">
+        <h3 class="detail-title">Storage</h3>
+        <p class="detail-text">Keep in a cool, dry place away from direct sunlight. Once opened, reseal the bag and use within 4 weeks for the best flavour. The marine collagen is stable at room temperature and doesn't need refrigerating.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why-section" id="why">
+  <div class="why-inner">
+    <p class="section-eyebrow">Why Collagen</p>
+    <h2 class="section-title">Your coffee should <em>do more</em></h2>
+    <div class="why-grid">
+      <div class="why-card"><span class="why-icon">✨</span><h4 class="why-title">Skin and Glow</h4><p class="why-text">Marine collagen supports elasticity and hydration from within. The kind of glow that starts before the mirror.</p></div>
+      <div class="why-card"><span class="why-icon">🦴</span><h4 class="why-title">Joints and Strength</h4><p class="why-text">Daily collagen supports joint comfort and bone density. Especially worth thinking about for women over 35.</p></div>
+      <div class="why-card"><span class="why-icon">🧠</span><h4 class="why-title">Focus and Energy</h4><p class="why-text">A carefully balanced cup with no artificial stimulants. Clean energy that doesn't crash you by 11am.</p></div>
+      <div class="why-card"><span class="why-icon">🌿</span><h4 class="why-title">Gut Health</h4><p class="why-text">Collagen peptides support gut lining integrity. Better digestion. Better mornings. It really is that simple.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2024 Daisy Coffee. A Daisy Maison brand.</span>
+    <span><a href="index.html">← Back to all products</a></span>
+  </div>
+</footer>
+
+<script src="basket.js"></script>
+<script>
+  let selectedSize = '250g';
+  let selectedPrice = 28.95;
+  let qty = 1;
+
+  function selectSize(btn, price, size) {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedPrice = price;
+    selectedSize = size;
+    document.getElementById('price-display').textContent = '£' + price.toFixed(2);
+  }
+
+  function changeQtyLocal(delta) {
+    qty = Math.max(1, qty + delta);
+    document.getElementById('qty-display').textContent = qty;
+  }
+
+  function addProduct() {
+    for (let i = 0; i < qty; i++) {
+      addToBasket('Collagen Coffee Blend', selectedPrice, selectedSize);
+    }
+  }
+
+  function switchImg(thumb, src) {
+    document.getElementById('main-img').src = src;
+    document.querySelectorAll('.product-img-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+  }
+</script>
+</body>
+</html>
